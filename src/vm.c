@@ -56,6 +56,7 @@ OBJECT stack_peek(STACK *s)
 void usage()
 {
     printf("usage: vm <file>\n");
+    exit(1);
 }
 
 uint8_t *load_file(char *filename)
@@ -114,7 +115,7 @@ int main(int argc, char **argv)
 
     if(argc != 2)
     {
-        usage();
+        //usage();
     }
 
     // fill all instructions with no ops
