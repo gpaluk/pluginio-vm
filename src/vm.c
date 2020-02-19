@@ -1,32 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
-typedef struct OBJECT_t
-{
-    uint8_t type;
-
-    union {
-        uint8_t u8;
-        int8_t i8;
-        uint32_t u32;
-        int32_t i32;
-        void *ptr;
-    };
-} OBJECT;
-
-typedef struct STACK_t
-{
-    int top;
-    int size;
-    OBJECT *stack;
-} STACK;
-
-typedef uint8_t* (*instruction)(uint8_t *, STACK *);
+#include "headers.h"
 
 STACK stack_new(int size)
 {
@@ -83,27 +55,6 @@ uint8_t *load_file(char *filename)
     return code;
 }
 
-uint8_t *op_nop(uint8_t *ip, STACK *s)
-{
-    return ip + 1;
-}
-
-uint8_t *op_push_char(uint8_t *ip, STACK *s)
-{
-    OBJECT o;
-    o.type = 'c';
-    o.u8 = *(ip + 1);
-    stack_push(s, o);
-    return ip + 2;
-}
-
-uint8_t *op_emit(uint8_t *ip, STACK *s)
-{
-    OBJECT o = stack_pop(s);
-    putchar(o.u8);
-    return ip + 1;
-}
-
 int main(int argc, char **argv)
 {
     printf("Plugin.IO VM Initialized\n");
@@ -128,7 +79,7 @@ int main(int argc, char **argv)
     ops['e'] = op_emit;
 
     //code = load_file(argv[1]); // TODO send via args
-    code = load_file("src/program.txt");
+    code = load_file("src/_program.txt");
     data = stack_new(1024);
     ip = code;
 

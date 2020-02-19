@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "vm.h": "c",
+        "headers.h": "c"
+    }
+}
