@@ -32,11 +32,13 @@ void EX3::SwfParser::readFromFile(const char *fileName)
 
 		// testing
 		ds = new EX3::DataStream(data);
-		uint8_t sig1 = ds->readUI8();
-		uint8_t sig2 = ds->readUI8();
+		uint8_t sig1 = ds->readUInt8();
+		uint8_t sig2 = ds->readUInt8();
 
 		cout << sig1 << endl;
 		cout << sig2 << endl;
+
+		uint16_t sig3 = ds->readUInt16();
 
 		//readFromRawData(data);
 	}

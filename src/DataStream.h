@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <vector>
-//#include <string>
+#include <string>
 /*
 #include <glob.h>
 */
@@ -16,9 +16,9 @@ namespace EX3
 	{
 		private:
 			vector<uint8_t> data;
-			long index = 0;
-			int bitIndex = 0;
-			int tempByte = 0;
+			uint32_t index = 0;
+			int bitPos = 0;
+			int bitBuf = 0;
 		public:
 			//DataStream();
 			//DataStream(DataStream* ds);
@@ -26,20 +26,27 @@ namespace EX3
 			//DataStream(uint8_t* data, size_t dataLength);
 			~DataStream();
 
+			uint8_t readUInt8();
+			uint16_t readUInt16();
+			uint32_t readUInt32();
+			uint64_t readUInt64();
+			int8_t readInt8();
+			int16_t readInt16();
+			int32_t readInt32();
+			int64_t readInt64();
 
-			uint8_t readUI8();
-			uint16_t readUI16();
-
-			uint64_t readUB(unsigned nBits);
-			int64_t readSB(unsigned nBits);
+			unsigned int readUBits(int nBits);
+			int readBits(int nBits);
+			void fillBitBuf();
 			
-
 			/*
-			uint32_t readUI32();
-			uint64_t readUI64();
-			int8_t readSI8();
-			int16_t readSI16();
-			int32_t readSI32();
+			float readFloat();
+			double readDouble();
+			*/
+
+			string readString();
+			string readString(long length);
+			/*
 			float readFIXED();
 			float readFIXED8();
 			float readFLOAT16();
@@ -52,8 +59,8 @@ namespace EX3
 			*/
 
 
-			uint8_t read();
-			int readNoBitReset();
+			uint64_t read();
+			//int readNoBitReset();
 
 			void alignByte();
 	};
