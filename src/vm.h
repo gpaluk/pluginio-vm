@@ -21,6 +21,15 @@ typedef struct STACK_t
     OBJECT *stack;
 } STACK;
 
+typedef struct RECT_t
+{
+    uint64_t nbits; // expanded bits
+    int64_t Xmin;
+    int64_t Xmax;
+    int64_t Ymin;
+    int64_t Ymax;
+} RECT;
+
 typedef uint8_t* (*instruction)(uint8_t *, STACK *);
 STACK stack_new(int size);
 int stack_push(STACK *s, OBJECT o);

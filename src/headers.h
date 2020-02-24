@@ -11,5 +11,6 @@
 
 #include "vm.h"
 #include "ops.h"
+#include "DataStream.h"
 
 #endif
