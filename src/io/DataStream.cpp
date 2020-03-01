@@ -49,9 +49,9 @@ int64_t EX3::DataStream::readInt64() {
 	 | read()<<48 | read()<<56;
 }
 
-uint64_t EX3::DataStream::read() {
-	//bitIndex = 0;
-	return (uint64_t)data[index++];
+int64_t EX3::DataStream::read() {
+	bitPos = 0;
+	return data[pos++];
 }
 
 void EX3::DataStream::alignByte() {
@@ -62,31 +62,57 @@ void EX3::DataStream::alignByte() {
 	}
 }
 
-/*
 int EX3::DataStream::readNoBitReset() {
-	return data[index++];
+	return data[pos++];
 }
-*/
+
+void EX3::DataStream::skipHeader() {
+	unsigned int nBits = readUBits(5);
+	readUBits(nBits);
+	readUBits(nBits);
+	readUBits(nBits);
+	readUBits(nBits);
+
+	pos += 4;
+}
 
 unsigned int EX3::DataStream::readUBits(int nBits) {
+	assert(nBits <= 56);
 	if (nBits == 0)
 		return 0;
-	int bitsLeft = nBits;
-	int result = 0;
-	if (!bitPos)
-		fillBitBuf();
-	int shift;
-	for (shift = bitsLeft - bitPos; shift > 0; shift = bitsLeft - bitPos) {
-		result |= bitBuf << shift;
-		bitsLeft -= bitPos;
-		fillBitBuf();
+
+	uint64_t ret = 0;
+	if (bitPos == 0) {
+		tempByte = readNoBitReset();
 	}
-	// consume part of buffer
-	result |= bitBuf >> -shift;
-	bitPos -= bitsLeft;
-	bitBuf &= 0xff >> (8 - bitPos); // mask consumed bits
-	return result;
+	for (unsigned bit = 0; bit < nBits; bit++) {
+		int nb = (tempByte >> (7 - bitPos)) & 1;
+		ret += (nb << (nBits - 1 - bit));
+		bitPos++;
+		if (bitPos == 8) {
+			bitPos = 0;
+			if (bit != nBits - 1) {
+				tempByte = readNoBitReset();
+			}
+		}
+	}
+
+	return ret;
 }
+
+float EX3::DataStream::readFIXED() {
+	int afterPoint = readUInt16();
+	int beforePoint = readUInt16();
+	float ret = ((float) ((beforePoint << 16) + afterPoint)) / 65536;
+	return ret;
+}
+
+float EX3::DataStream::readFIXED8() {
+	int afterPoint = read();
+	int beforePoint = read();
+	float ret = beforePoint + (((float) afterPoint) / 256);
+	return ret;
+} 
 
 int EX3::DataStream::readBits(int nBits) {
 	assert(nBits <= 32);

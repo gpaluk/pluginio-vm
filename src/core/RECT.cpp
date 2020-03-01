@@ -22,10 +22,10 @@ EX3::RECT::RECT(DataStream * ds) {
 }
 
 void EX3::RECT::readData(DataStream *ds) {
-	nBits = ds->readUB(5);
-	Xmin = ds->readSB((unsigned) nBits);
-	Xmax = ds->readSB((unsigned) nBits);
-	Ymin = ds->readSB((unsigned) nBits);
-	Ymax = ds->readSB((unsigned) nBits);
+	nBits = ds->readUBits(5);
+	Xmin = ds->readBits((unsigned) nBits);
+	Xmax = ds->readBits((unsigned) nBits);
+	Ymin = ds->readBits((unsigned) nBits);
+	Ymax = ds->readBits((unsigned) nBits);
 	ds->alignByte();
 }

@@ -4,10 +4,13 @@
 #include <stdint.h>
 #include <string>
 #include <iostream>
+#include <stdint.h>
+#include <vector>
+#include <string>
 #include "Swf.h"
-#include "DataStream.h"
+#include "../io/DataStream.h"
 //#include "SwfCompression.h"
-//#include "RECT.h"
+#include "RECT.h"
 //#include "Tag.h"
 //#include "RGB.h"
 //#include "TagStub.h"
@@ -21,6 +24,7 @@ namespace EX3
         private:
             EX3::Swf *swf;
             EX3::DataStream *ds;
+            vector<uint8_t> data;
         public:
             SwfParser();
             SwfParser(Swf* swf);
@@ -35,6 +39,7 @@ namespace EX3
             static Tag* resolveTag(TagStub* t);
             void readTagList();
             */
+            bool isValidSwf();
     };
 };
 

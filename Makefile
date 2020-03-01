@@ -1,12 +1,13 @@
 EMCC := em++
-EMFLAGS := -std=c++11 --preload-file src/_test.swf
+EMFLAGS := -std=c++11 --preload-file data/test.swf -Isrc/core -Isrc/io
 PORTS := -s USE_ZLIB=1
-SOURCES := src/DataStream.cpp src/Swf.cpp src/SwfParser.cpp src/main.cpp
 SRC_DIR := ./src
-SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+SRC_FILES := $(SRC_DIR)/main.cpp \
+			$(wildcard $(SRC_DIR)/core/*.cpp) \
+			$(wildcard $(SRC_DIR)/io/*.cpp)
 
-build: $(SOURCES)
-	$(EMCC) $(EMFLAGS) $(SOURCES) $(PORTS) -o bin/vm.html
+build: $(SRC_FILES)
+	$(EMCC) $(EMFLAGS) $(SRC_FILES) $(PORTS) -o bin/vm.html
 
 test:
 	python -m SimpleHTTPServer 8080

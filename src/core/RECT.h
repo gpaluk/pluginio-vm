@@ -10,8 +10,6 @@ namespace EX3
 {
     class RECT
     {
-        protected:
-            
         public:
             uint64_t nBits;
             int64_t Xmin;

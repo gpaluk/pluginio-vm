@@ -16,9 +16,10 @@ namespace EX3
 	{
 		private:
 			vector<uint8_t> data;
-			uint32_t index = 0;
+			uint32_t pos = 0;
 			int bitPos = 0;
 			int bitBuf = 0;
+			int tempByte = 0;
 		public:
 			//DataStream();
 			//DataStream(DataStream* ds);
@@ -39,6 +40,7 @@ namespace EX3
 			int readBits(int nBits);
 			void fillBitBuf();
 			
+			void skipHeader(); // TODO This is just for testing. Remove
 			/*
 			float readFloat();
 			double readDouble();
@@ -46,9 +48,11 @@ namespace EX3
 
 			string readString();
 			string readString(long length);
-			/*
+			
 			float readFIXED();
 			float readFIXED8();
+
+			/*
 			float readFLOAT16();
 			float readFLOAT();
 			double readDOUBLE();
@@ -59,8 +63,8 @@ namespace EX3
 			*/
 
 
-			uint64_t read();
-			//int readNoBitReset();
+			int64_t read();
+			int readNoBitReset();
 
 			void alignByte();
 	};

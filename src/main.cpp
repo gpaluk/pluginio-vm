@@ -1,6 +1,6 @@
   
 #include <iostream>
-#include "SwfParser.h"
+#include "core/SwfParser.h"
 
 using namespace std;
 
@@ -26,7 +26,7 @@ int main(int argc, char** argv)
     cout << sig2 << endl;
 **/
     EX3::SwfParser p;
-	p.readFromFile("src/_test.swf");
+	p.readFromFile("./data/test.swf");
 
     return 0;
 }
