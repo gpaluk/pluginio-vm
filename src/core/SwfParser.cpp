@@ -93,8 +93,8 @@ void EX3::SwfParser::readFromFile(const char *fileName)
 		printf("Rect Ymin: %lli\n", rect->Ymin);
 		printf("Rect Ymax: %lli\n", rect->Ymax);
 
-		printf("Value: %f\n", ds->readFIXED8());
-		printf("Value: %u\n", ds->readUInt16());
+		printf("Framerate: %f\n", ds->readFIXED8());
+		printf("Frame count: %u\n", ds->readUInt16());
 
 		delete rect;
 		//readFromRawData(data);
