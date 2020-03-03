@@ -1,5 +1,5 @@
 EMCC := em++
-EMFLAGS := -std=c++11 -g4 --preload-file data/test.swf -Isrc/core -Isrc/io
+EMFLAGS := -std=c++11 --preload-file data/test.swf -Isrc/core -Isrc/io
 PORTS := -s USE_ZLIB=1
 SRC_DIR := ./src
 SRC_FILES := $(SRC_DIR)/main.cpp \

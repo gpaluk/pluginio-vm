@@ -135,7 +135,6 @@ EX3::Tag* EX3::SwfParser::resolveTag(EX3::TagStub *t) {
 		cout << "Tag " << t->getId() << "was resolved." << endl;
 
 		case 0:
-			cout << "End Tag was hit!" << endl;
 			ret = new EX3::EndTag(t->getDataStream());
 			break;
 			/*
