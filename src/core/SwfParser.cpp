@@ -148,32 +148,32 @@ EX3::Tag* EX3::SwfParser::resolveTag(EX3::TagStub *t) {
 			ret = new EX3::ShowFrameTag(t->getDataStream());
 			break;
 		case 9:
-			ret = new SetBackgroundColorTag(t->getDataStream());
+			ret = new EX3::SetBackgroundColorTag(t->getDataStream());
 			break;
 		case 69:
-			ret = new FileAttributesTag(t->getDataStream());
+			ret = new EX3::FileAttributesTag(t->getDataStream());
 			break;
 		case 73:
-			ret = new DefineFontAlignZonesTag(t->getDataStream());
+			ret = new EX3::DefineFontAlignZonesTag(t->getDataStream());
 			break;
 			/*
 		case 75:
-			ret = new DefineFont3Tag(t->getDataStream());
+			ret = new EX3::DefineFont3Tag(t->getDataStream());
 			break;
 			*/
 		case 76:
-			ret = new SymbolClassTag(t->getDataStream());
+			ret = new EX3::SymbolClassTag(t->getDataStream());
 			break;
 			/*
 		case 82:
-			ret = new DoABCDefineTag(t->getDataStream());
+			ret = new EX3::DoABCDefineTag(t->getDataStream());
 			break;
-		case 86:
 		*/
-			ret = new DefineSceneAndFrameLabelDataTag(t->getDataStream());
+		case 86:
+			ret = new EX3::DefineSceneAndFrameLabelDataTag(t->getDataStream());
 			break;
 		case 88:
-			ret = new DefineFontNameTag(t->getDataStream());
+			ret = new EX3::DefineFontNameTag(t->getDataStream());
 			break;
 		default:
 			ret = new EX3::UnknownTag(t->getId());
