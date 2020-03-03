@@ -1,4 +1,12 @@
+#include <string>
+#include <sstream>
+#include <iostream>
+
 #include "DataStream.h"
+//#include "EndShapeRecord.h"
+//#include "StyleChangeRecord.h"
+//#include "StraightEdgeRecord.h"
+//#include "CurvedEdgeRecord.h"
 #include "SwfBaseTypes.h"
 
 EX3::DataStream::DataStream(vector<uint8_t> data) {
@@ -145,6 +153,45 @@ vector<uint8_t> EX3::DataStream::readBytes(long len) {
 	bitPos = 0;
 	ret = vector<uint8_t>(data.begin() + pos, data.begin() + pos + len);
 	pos += len;
+
+	return ret;
+}
+
+string EX3::DataStream::readString() {
+	ostringstream ret;
+	uint8_t r;
+	while (true) {
+		r = read();
+		if (r == 0) {
+			return ret.str();
+		}
+		ret << r;
+	}
+}
+
+string EX3::DataStream::readString(long len) {
+	ostringstream ret;
+	for (int i = 0; i < len; i++) {
+		ret << read();
+	}
+
+	return ret.str();
+}
+
+uint32_t EX3::DataStream::readEncodedU32() {
+	uint32_t ret = read();
+	if (!(ret & 0x00000080))
+		return ret;
+	ret = (ret & 0x0000007F) | (read()) << 7;
+	if(!(ret & 0x00004000))
+		return ret;
+	ret = (ret & 0x00003FFF) | (read()) << 14;
+	if (!(ret & 0x00200000))
+		return ret;
+	ret = (ret & 0x001FFFFF) | (read()) << 21;
+	if (!(ret & 0x10000000))
+		return ret;
+	ret = (ret & 0xFFFFFFFF) | (read()) << 28;
 
 	return ret;
 }

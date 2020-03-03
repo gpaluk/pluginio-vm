@@ -2,7 +2,7 @@
 #define EX3_RGB_H
 
 #include <stdint.h>
-#include "DataStream.h"
+#include "../io/DataStream.h"
 
 namespace EX3
 {
