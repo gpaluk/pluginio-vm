@@ -125,3 +125,20 @@ void EX3::DataStream::fillBitBuf() {
 	bitBuf = readUInt8();
 	bitPos = 8;
 }
+
+long EX3::DataStream::available() {
+	return (data.size() - pos);
+}
+
+vector<uint8_t> EX3::DataStream::readBytes(long len) {
+	vector<uint8_t> ret;
+
+	if (len <= 0)
+		return ret;
+
+	bitPos = 0;
+	ret = vector<uint8_t>(data.begin() + pos, data.begin() + pos + len);
+	pos += len;
+
+	return ret;
+}

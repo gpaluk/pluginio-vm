@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <string>
 
-#include "DataStream.h"
+#include "../io/DataStream.h"
 
 using namespace std;
 
@@ -17,13 +17,18 @@ namespace EX3
 	        string tagName;
         public:
             Tag(uint16_t tagId, string tagName);
-            virtual ~Tag();
+            //virtual ~Tag();
 
-            virtual void readData(DataStream* ds) = 0;
+            virtual void readData(EX3::DataStream* ds) = 0;
 
-            uint16_t getId();
-            virtual string getName();
+            virtual uint16_t getId(){
+                return id;
+            };
+            
+            virtual string getName(){
+                return tagName;
+            };
     };
-};
+}
 
 #endif //EX3_TAG_H

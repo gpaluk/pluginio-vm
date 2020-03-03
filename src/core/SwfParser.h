@@ -3,17 +3,13 @@
 
 #include <stdint.h>
 #include <string>
-#include <iostream>
-#include <stdint.h>
-#include <vector>
-#include <string>
+
 #include "Swf.h"
-#include "../io/DataStream.h"
-//#include "SwfCompression.h"
+#include "SwfCompression.h"
 #include "RECT.h"
-//#include "Tag.h"
+#include "Tag.h"
 //#include "RGB.h"
-//#include "TagStub.h"
+#include "TagStub.h"
 
 using namespace std;
 
@@ -35,12 +31,13 @@ namespace EX3
             void readFromRawData(vector<uint8_t> data);
             void readFromRawData(uint8_t* data, size_t dataLength);
             static void decompress(vector<uint8_t> in, vector<uint8_t>& out);
-            Tag* readTag();
-            static Tag* resolveTag(TagStub* t);
-            void readTagList();
             */
+            EX3::Tag* readTag();
+            static EX3::Tag* resolveTag(EX3::TagStub* t);
+            void readTagList();
+            
             bool isValidSwf();
     };
-};
+}
 
 #endif

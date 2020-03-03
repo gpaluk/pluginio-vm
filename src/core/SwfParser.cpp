@@ -6,6 +6,11 @@
 #include <assert.h>
 #include "SwfParser.h"
 
+#include "Tag.h"
+#include "TagStub.h"
+#include "EndTag.h"
+#include "UnknownTag.h"
+
 EX3::SwfParser::SwfParser() {
 	swf = new EX3::Swf();
 }
@@ -28,7 +33,7 @@ bool EX3::SwfParser::isValidSwf() {
 	const uint32_t SWF = 'S'<<16 | 'W'<<8 | 'F';
 	const uint32_t SWC = 'S'<<16 | 'W'<<8 | 'C';
 	
-	return magic == SWC || magic == SWC;
+	return magic == SWF || magic == SWC;
 }
 
 void EX3::SwfParser::readFromFile(const char *fileName)
@@ -98,5 +103,89 @@ void EX3::SwfParser::readFromFile(const char *fileName)
 
 		delete rect;
 		//readFromRawData(data);
+		
+		readTagList();
 	}
+}
+
+EX3::Tag* EX3::SwfParser::readTag() {
+	uint16_t tagIdAndLength = ds->readUInt16();
+	uint16_t tagId = tagIdAndLength >> 6;
+
+	uint32_t tagLength = (uint32_t) tagIdAndLength & 0x3F;
+	if (tagLength == 0x3F)
+	{
+		tagLength = ds->readUInt32();
+	}
+
+	if (tagLength > ds->available())
+	{
+		tagLength = (uint32_t) ds->available();
+	}
+
+	EX3::DataStream *tagDataStream = new EX3::DataStream(ds->readBytes(tagLength));
+	EX3::TagStub *ret = new EX3::TagStub(tagId, "UnresolvedTag", tagDataStream);
+
+	return resolveTag(ret);
+}
+
+EX3::Tag* EX3::SwfParser::resolveTag(EX3::TagStub *t) {
+	EX3::Tag *ret;
+	switch (t->getId()) {
+		cout << "Tag " << t->getId() << "was resolved." << endl;
+
+		case 0:
+			cout << "End Tag was hit!" << endl;
+			ret = new EX3::EndTag(t->getDataStream());
+			break;
+			/*
+		case 1:
+			ret = new ShowFrameTag(t->getDataStream());
+			break;
+		case 9:
+			ret = new SetBackgroundColorTag(t->getDataStream());
+			break;
+		case 69:
+			ret = new FileAttributesTag(t->getDataStream());
+			break;
+		case 73:
+			ret = new DefineFontAlignZonesTag(t->getDataStream());
+			break;
+		case 75:
+			ret = new DefineFont3Tag(t->getDataStream());
+			break;
+		case 76:
+			ret = new SymbolClassTag(t->getDataStream());
+			break;
+		case 82:
+			ret = new DoABCDefineTag(t->getDataStream());
+			break;
+		case 86:
+			ret = new DefineSceneAndFrameLabelDataTag(t->getDataStream());
+			break;
+		case 88:
+			ret = new DefineFontNameTag(t->getDataStream());
+			break;
+			*/
+		default:
+			ret = new EX3::UnknownTag(t->getId());
+	}
+	delete t;
+
+	return ret;
+}
+
+void EX3::SwfParser::readTagList() {
+	
+	vector<EX3::Tag*> tagList;
+	EX3::Tag *t;
+
+	while (ds->available() > 0) {
+		t = readTag();
+		if (t == NULL)
+			break;
+
+		cout << t->getName() << endl;
+		tagList.insert(tagList.end(), t);
+	};
 }

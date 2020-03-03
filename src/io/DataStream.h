@@ -62,6 +62,8 @@ namespace EX3
 			string readString(long len);
 			*/
 
+			long available();
+			vector<uint8_t> readBytes(long len);
 
 			int64_t read();
 			int readNoBitReset();
