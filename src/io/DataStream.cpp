@@ -1,4 +1,5 @@
 #include "DataStream.h"
+#include "SwfBaseTypes.h"
 
 EX3::DataStream::DataStream(vector<uint8_t> data) {
 	this->data = data;
@@ -52,6 +53,11 @@ int64_t EX3::DataStream::readInt64() {
 int64_t EX3::DataStream::read() {
 	bitPos = 0;
 	return data[pos++];
+}
+
+float EX3::DataStream::readFLOAT16() {
+	uint16_t t = readUInt16();
+	return EX3::Float16Compressor::decompress(t);
 }
 
 void EX3::DataStream::alignByte() {

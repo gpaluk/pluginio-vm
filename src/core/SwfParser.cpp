@@ -10,6 +10,10 @@
 #include "TagStub.h"
 #include "EndTag.h"
 #include "UnknownTag.h"
+#include "ShowFrameTag.h"
+#include "SetBackgroundColorTag.h"
+#include "FileAttributesTag.h"
+#include "DefineFontAlignZonesTag.h"
 
 EX3::SwfParser::SwfParser() {
 	swf = new EX3::Swf();
@@ -137,9 +141,8 @@ EX3::Tag* EX3::SwfParser::resolveTag(EX3::TagStub *t) {
 		case 0:
 			ret = new EX3::EndTag(t->getDataStream());
 			break;
-			/*
 		case 1:
-			ret = new ShowFrameTag(t->getDataStream());
+			ret = new EX3::ShowFrameTag(t->getDataStream());
 			break;
 		case 9:
 			ret = new SetBackgroundColorTag(t->getDataStream());
@@ -147,9 +150,12 @@ EX3::Tag* EX3::SwfParser::resolveTag(EX3::TagStub *t) {
 		case 69:
 			ret = new FileAttributesTag(t->getDataStream());
 			break;
+			
 		case 73:
+		
 			ret = new DefineFontAlignZonesTag(t->getDataStream());
 			break;
+			/*
 		case 75:
 			ret = new DefineFont3Tag(t->getDataStream());
 			break;

@@ -52,8 +52,8 @@ namespace EX3
 			float readFIXED();
 			float readFIXED8();
 
-			/*
 			float readFLOAT16();
+			/*
 			float readFLOAT();
 			double readDOUBLE();
 			uint32_t readEncodedU32();

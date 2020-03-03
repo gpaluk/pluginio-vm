@@ -10,7 +10,7 @@ EX3::RECT::RECT(int64_t Xmin, int64_t Xmax, int64_t Ymin, int64_t Ymax) {
 	this->Ymax = Ymax;
 }
 
-EX3::RECT::RECT(RECT *r) {
+EX3::RECT::RECT(EX3::RECT *r) {
 	Xmin = r->Xmin;
 	Xmax = r->Xmax;
 	Ymin = r->Ymin;

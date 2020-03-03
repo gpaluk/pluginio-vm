@@ -27,6 +27,6 @@ namespace EX3
             vector<Tag> tags;
             */
     };
-};
+}
 
 #endif //EX3_SWF_H

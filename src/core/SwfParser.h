@@ -8,7 +8,7 @@
 #include "SwfCompression.h"
 #include "RECT.h"
 #include "Tag.h"
-//#include "RGB.h"
+#include "RGB.h"
 #include "TagStub.h"
 
 using namespace std;
