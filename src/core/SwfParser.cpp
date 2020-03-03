@@ -138,9 +138,8 @@ EX3::Tag* EX3::SwfParser::readTag() {
 
 EX3::Tag* EX3::SwfParser::resolveTag(EX3::TagStub *t) {
 	EX3::Tag *ret;
-	switch (t->getId()) {
-		cout << "Tag " << t->getId() << "was resolved." << endl;
 
+	switch (t->getId()) {
 		case 0:
 			ret = new EX3::EndTag(t->getDataStream());
 			break;
