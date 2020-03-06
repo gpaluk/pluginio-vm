@@ -3,10 +3,10 @@
 #include <iostream>
 
 #include "DataStream.h"
-//#include "EndShapeRecord.h"
-//#include "StyleChangeRecord.h"
-//#include "StraightEdgeRecord.h"
-//#include "CurvedEdgeRecord.h"
+#include "EndShapeRecord.h"
+#include "StyleChangeRecord.h"
+#include "StraightEdgeRecord.h"
+#include "CurvedEdgeRecord.h"
 #include "SwfBaseTypes.h"
 
 EX3::DataStream::DataStream(vector<uint8_t> data) {
@@ -194,4 +194,61 @@ uint32_t EX3::DataStream::readEncodedU32() {
 	ret = (ret & 0xFFFFFFFF) | (read()) << 28;
 
 	return ret;
+}
+
+EX3::SHAPERECORD *EX3::DataStream::readSHAPERECORD(int fillBits, int lineBits, int shapeNum)
+{
+	EX3::SHAPERECORD *ret;
+	int typeFlag = (int) readUBits(1);
+	if(typeFlag == 0) {
+		EX3::StyleChangeRecord *scr = new EX3::StyleChangeRecord(this, fillBits, lineBits, shapeNum);
+		if ((!scr->stateNewStyles) && (!scr->stateLineStyle) && (!scr->stateFillStyle1) && (!scr->stateFillStyle0) && (!scr->stateMoveTo))
+			ret = new EX3::EndShapeRecord();
+		else
+			ret = scr;
+	} else {
+		int straightFlag = (int) readUBits(1);
+		if (straightFlag == 1){
+			ret = new EX3::StraightEdgeRecord(this);
+		} else {
+			ret = new EX3::CurvedEdgeRecord(this);
+		}
+	}
+
+	return ret;
+}
+
+vector<EX3::SHAPERECORD*> EX3::DataStream::readSHAPERECORDS(int fillBits, int lineBits, int shapeNum) {
+	vector<EX3::SHAPERECORD*> ret;
+	EX3::SHAPERECORD *rec;
+	do {
+		rec = readSHAPERECORD(fillBits, lineBits, shapeNum);
+		if (EX3::StyleChangeRecord *scRec = dynamic_cast<EX3::StyleChangeRecord*>(rec)) {
+			if (scRec->stateNewStyles) {
+				fillBits = scRec->numFillBits;
+				lineBits = scRec->numLineBits;
+			}
+		}
+		ret.push_back(rec);
+	} while (!dynamic_cast<EX3::EndShapeRecord*>(rec));
+	alignByte();
+
+	return ret;
+}
+
+EX3::LANGCODE EX3::DataStream::readLANGCODE() {
+	LANGCODE ret;
+	ret =  LANGCODE(readUInt8());
+	return ret;
+}
+
+long EX3::DataStream::getPosition() {
+	return pos;
+}
+
+void EX3::DataStream::seek(long index) {
+	if (index <= 0)
+		return;
+
+	this->pos = index;
 }

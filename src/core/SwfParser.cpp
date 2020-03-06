@@ -17,6 +17,8 @@
 #include "SymbolClassTag.h"
 #include "DefineSceneAndFrameLabelDataTag.h"
 #include "DefineFontNameTag.h"
+#include "DoABCDefineTag.h"
+#include "DefineFont3Tag.h"
 
 EX3::SwfParser::SwfParser() {
 	swf = new EX3::Swf();
@@ -155,19 +157,15 @@ EX3::Tag* EX3::SwfParser::resolveTag(EX3::TagStub *t) {
 		case 73:
 			ret = new EX3::DefineFontAlignZonesTag(t->getDataStream());
 			break;
-			/*
 		case 75:
 			ret = new EX3::DefineFont3Tag(t->getDataStream());
 			break;
-			*/
 		case 76:
 			ret = new EX3::SymbolClassTag(t->getDataStream());
 			break;
-			/*
 		case 82:
 			ret = new EX3::DoABCDefineTag(t->getDataStream());
 			break;
-		*/
 		case 86:
 			ret = new EX3::DefineSceneAndFrameLabelDataTag(t->getDataStream());
 			break;

@@ -8,6 +8,10 @@
 #include <glob.h>
 */
 
+#include "LANGCODE.h"
+//#include "SwfCompression.h"
+#include "SHAPERECORD.h"
+
 using namespace std;
 
 namespace EX3
@@ -54,6 +58,13 @@ namespace EX3
 
 			float readFLOAT16();
 			uint32_t readEncodedU32();
+
+			SHAPERECORD* readSHAPERECORD(int fillBits, int lineBits, int shapeNum);
+			vector<EX3::SHAPERECORD*> readSHAPERECORDS(int fillBits, int lineBits, int shapeNum);
+			
+			LANGCODE readLANGCODE();
+			long getPosition();
+			void seek(long index);
 			/*
 			float readFLOAT();
 			double readDOUBLE();
